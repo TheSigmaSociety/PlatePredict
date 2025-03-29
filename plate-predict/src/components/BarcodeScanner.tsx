@@ -9,39 +9,30 @@ export default function BarcodeScanner() {
     const [loading, setLoading] = useState(false);
     const inputRef = useRef(null);
     
-    const handleImageChange = (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-            setImage(URL.createObjectURL(e.target.files[0]));
-        }
-    };
+  
+    
     
     const handlePredict = async () => {
-        if (!image) return;
-        setLoading(true);
-        try {
-            const response = await fetch('http://localhost:5000/predict', {
-                method: 'POST',
-                body: JSON.stringify({ image }),
-                headers: { 'Content-Type': 'application/json' },
-            });
-            const data = await response.json();
-            setPrediction(data.prediction);
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
-            setLoading(false);
-        }
+        console.log("predicing...")
+        setIsOpen(false);
     };
     
     return (
+
         <div>
+             <button
+                onClick={() => setIsOpen(true)}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            >
+                Open the Barcode Scanner
+            </button>
+            
             {isOpen && (
-                <div>
-                    <input type="file" accept="image/*" onChange={handleImageChange} ref={inputRef} />
-                    <button onClick={handlePredict} disabled={!image || loading}>
-                        {loading ? 'Loading...' : 'Predict'}
-                    </button>
-                    {image && <img src={image} alt="Selected" style={{ width: '300px', height: 'auto' }} />}
+                <div className = "backdrop-blur-md fixed inset-0 flex items-center justify-center bg-black/10 bg-opacity-10 z-50">
+                <button onClick={handlePredict} className = "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                    {loading ? 'Loading...' : 'Scan Barcode'}
+                </button>
+                {image && <img src={image} alt="Selected" style={{ width: '300px', height: 'auto' }} />}
                 </div>
             )}
         </div>
