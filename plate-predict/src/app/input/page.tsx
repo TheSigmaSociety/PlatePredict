@@ -119,7 +119,7 @@ export default function Page() {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={wasteGraph} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis className="text-white" dataKey="x" label={{ value: "Number of Days Ago", position: "insideBottom", offset: -5 }} />
+                  <XAxis className="text-white" dataKey="x" label={{ value: "Number of Days", position: "insideBottom", offset: -5 }} />
                   <YAxis className="text-white" label={{ value: "Waste Index", angle: -90, position: "insideLeft" }} />
                   <Tooltip />
                   <Line type="monotone" dataKey="y" stroke="#ff0000" strokeWidth={3} />

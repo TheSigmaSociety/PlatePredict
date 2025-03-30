@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { BrowserMultiFormatReader } from "@zxing/browser/esm/readers/BrowserMultiFormatReader";
 
 interface BarcodeScannerProps {
   onPhotoTaken?: (photo: string) => void;
@@ -10,12 +9,14 @@ interface BarcodeScannerProps {
 const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onPhotoTaken }) => {
   const [isNumpadOpen, setIsNumpadOpen] = useState(false);
   const [studentId, setStudentId] = useState("");
-  function clickEmoji() {
+
+  function handleSubmit() {
     if (studentId.length >= 0) {
       setIsNumpadOpen(false);
       onPhotoTaken(studentId);
     }
   }
+
   return (
     <div>
       <button
@@ -42,47 +43,42 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onPhotoTaken }) => {
 
       {isNumpadOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md">
-          <div className="p-6 rounded-lg shadow-lg backdrop-blur-md bg-black/10">
+          <div className="p-6 rounded-lg shadow-[0_0_20px_rgba(255,255,255,0.4)] border border-white/20 backdrop-blur-md bg-black/10">
             <h2 className="text-xl font-bold mb-4 text-white subtitle-font">Enter Student ID</h2>
             <input
               type="text"
               value={studentId}
               onChange={(e) => setStudentId(e.target.value)}
-              className="w-full mb-4 px-3 py-2 border rounded text-center text-lg text-white"
+              className="w-full mb-4 px-3 py-2 border border-white/30 rounded text-center text-lg text-white bg-black/30 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-[0_0_10px_rgba(255,255,255,0.2)]"
             />
             <div className="grid grid-cols-3 gap-2 subtitle-font">
               {["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].map((digit, index) => (
                 <button
                   key={index}
                   onClick={() => setStudentId(studentId + digit)}
-                  className="bg-gray-200 hover:bg-gray-300 p-3 rounded text-lg"
+                  className="bg-white/10 hover:bg-white/20 p-3 rounded text-lg text-white border border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.1)] transition"
                 >
                   {digit}
                 </button>
               ))}
               <button
                 onClick={() => setStudentId("")}
-                className="col-span-2 bg-red-200 hover:bg-red-300 p-3 rounded"
+                className="col-span-2 bg-red-500/30 hover:bg-red-500/50 p-3 rounded text-white border border-red-500/30 shadow-[0_0_10px_rgba(255,100,100,0.2)] transition"
               >
                 Clear
               </button>
-              <button
-                onClick={() => setStudentId(studentId.slice(0, -1))}
-                className="bg-yellow-200 hover:bg-yellow-300 p-3 rounded"
-              >
-                Del
-              </button>
             </div>
-            <div className="mt-4 flex gap-2">
+            
+            <div className="flex justify-between mt-4">
               <button
-                onClick={clickEmoji}
-                className="px-4 py-2 backdrop-blur-md bg-black/40 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                onClick={handleSubmit}
+                className="bg-green-500/30 hover:bg-green-500/50 py-2 px-6 rounded text-white border border-green-500/30 shadow-[0_0_10px_rgba(100,255,100,0.2)] transition"
               >
                 Submit
               </button>
               <button
                 onClick={() => setIsNumpadOpen(false)}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-gray-500"
+                className="bg-gray-500/30 hover:bg-gray-500/50 py-2 px-6 rounded text-white border border-gray-500/30 shadow-[0_0_10px_rgba(200,200,200,0.2)] transition"
               >
                 Cancel
               </button>
