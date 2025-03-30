@@ -4,6 +4,10 @@ import React, { useState, useRef } from 'react';
 import Camera from './camera';
 import { BrowserMultiFormatReader } from '@zxing/browser/esm/readers/BrowserMultiFormatReader';
 
+interface BarcodeScannerProps {
+    onPhotoTaken?: (photo: string) => void;
+  }
+  
 async function decodeBase64Barcode(base64String: string) {
     try {
       const codeReader = new BrowserMultiFormatReader();
@@ -27,16 +31,15 @@ async function decodeBase64Barcode(base64String: string) {
       return null;
     }
   }
-export default function BarcodeScanner() {
+const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onPhotoTaken }) => {
     const [isOpen, setIsOpen] = useState(false);
    
 
 
     function handleBarcode(photo: string) {
-        console.log(photo);
         decodeBase64Barcode(photo).then((result) => {
             if (result) {
-                console.log("Decoded barcode:", result.getText());
+                onPhotoTaken(result.getText());
             }
         });
          setIsOpen(false);
@@ -63,3 +66,4 @@ export default function BarcodeScanner() {
         </div>
     );
 }
+export default BarcodeScanner;

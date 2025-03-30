@@ -2,11 +2,17 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Camera from './camera';
-export default function WasteScanner() {
+
+interface WasteScannerProps {
+    onPhotoTaken?: (photo: string) => void;
+  }
+
+  
+const WasteScanner: React.FC<WasteScannerProps> = ({ onPhotoTaken }) => {
     const [isOpen, setIsOpen] = useState(false);
     
     async function handlePredict(photoThing: string) {
-        console.log(photoThing);
+        onPhotoTaken(photoThing); // Pass the image to the parent component
         setIsOpen(false);
     }       
 
@@ -33,3 +39,4 @@ export default function WasteScanner() {
         </div>
     );
 }
+export default WasteScanner;
