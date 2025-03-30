@@ -2,7 +2,7 @@ import React from 'react';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import WasteScanner from '@/components/WasteScanner';
 export default function Page() {
-
+    const [barcode, setBarcode] = React.useState("");
     return (
         <div className="flex flex-col items-center justify-center min-h-screen gap-4">
 

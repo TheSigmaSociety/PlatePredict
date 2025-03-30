@@ -2,13 +2,44 @@
 
 import React, { useState, useRef } from 'react';
 import Camera from './camera';
+import { BrowserMultiFormatReader } from '@zxing/browser/esm/readers/BrowserMultiFormatReader';
+
+async function decodeBase64Barcode(base64String: string) {
+    try {
+      const codeReader = new BrowserMultiFormatReader();
+      
+      // Convert Base64 to Blob
+      const response = await fetch(base64String);
+      const blob = await response.blob();
+      
+      // Create an object URL for the blob
+      const url = URL.createObjectURL(blob);
+  
+      // Decode the barcode
+      const result = await codeReader.decodeFromImageUrl(url);
+      
+      // Clean up the object URL
+      URL.revokeObjectURL(url);
+  
+      return result; // The interpreted barcode value
+    } catch (error) {
+      console.error("Error decoding barcode:", error);
+      return null;
+    }
+  }
 export default function BarcodeScanner() {
     const [isOpen, setIsOpen] = useState(false);
    
 
+
     function handleBarcode(photo: string) {
         console.log(photo);
-        setIsOpen(false);
+        decodeBase64Barcode(photo).then((result) => {
+            if (result) {
+                console.log("Decoded barcode:", result.getText());
+            }
+        });
+         setIsOpen(false);
     }
     
     
