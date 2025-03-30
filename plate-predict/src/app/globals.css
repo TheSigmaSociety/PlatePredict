@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Mate:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Mate:ital@0;1&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap');
 
 @import "tailwindcss";
 
@@ -8,11 +9,11 @@
 }
 
 .title-color {
-  color:#60a0b9;
+  color:#ffffff;
 }
 
 .subtitle-color {
-  color:#86c6df;
+  color:#ffffff;
 }
 
 .subtitle-font {
@@ -21,4 +22,8 @@
 
 .text-color {
   color:#3f49ba;
+}
+
+.text-font {
+  font-family: 'Didact Gothic', sans-serif;
 }
