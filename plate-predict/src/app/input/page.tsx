@@ -1,8 +1,13 @@
+"use client";
+
 import React from 'react';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import WasteScanner from '@/components/WasteScanner';
 export default function Page() {
     const [barcode, setBarcode] = React.useState("");
+    function handleBarcode(barcode: string) {
+        console.log(barcode);
+    }
     return (
         <div className="flex flex-col items-center justify-center min-h-screen gap-4">
 
@@ -11,7 +16,7 @@ export default function Page() {
                 Open Waste Scanner
             </button> */}
             <WasteScanner />
-            <BarcodeScanner />
+            <BarcodeScanner allah = {handleBarcode}/>
 
         </div>
     );
