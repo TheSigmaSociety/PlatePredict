@@ -71,7 +71,7 @@ export default function Navbar() {
                                         strokeLinejoin="round"
                                     />
                                 </svg>
-                                <span className="text-white text-lg sm:text-xl font-bold">PlatePredict</span>
+                                <span className="text-white text-lg sm:text-xl font-bold subtitle-font">PlatePredict</span>
                             </Link>
                         </div>
                         

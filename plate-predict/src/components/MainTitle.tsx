@@ -12,7 +12,7 @@ export default function MainTitle() {
     const backgroundImages = ['/BackgroundA.jpg', '/BackgroundB.jpg', '/BackgroundC.jpg', '/BackgroundD.jpg'];
     
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [nextImageIndex, setNextImageIndex] = useState(null);
+    const [nextImageIndex, setNextImageIndex] = useState<number | null>(null);
     const [showNext, setShowNext] = useState(false);
     
     useEffect(() => {
@@ -62,7 +62,6 @@ export default function MainTitle() {
                     <h1 className="text-6xl md:text-7xl lg:text-9xl font-bold title-font title-color">P l a t e P r e d i c t</h1>
                     <p className="mt-4 text-4xl text-center subtitle-color subtitle-font">saving cafeterias, one plate at a time</p>
                     
-                    {/* Buttons container with flexbox */}
                     <div className="flex flex-row md:flex-row gap-4 mt-12">
                         <button
                             onClick={scrollDown}
