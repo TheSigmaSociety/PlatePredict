@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 export default function MainTitle() {
     const scrollDown = () => {
         window.scrollTo({
@@ -6,16 +8,65 @@ export default function MainTitle() {
         });
     };
 
+    // Background images array
+    const backgroundImages = [
+        '/BackgroundA.jpg',
+        '/BackgroundB.jpg',
+        '/BackgroundC.jpg',
+        '/BackgroundD.jpg'
+    ];
+    
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [nextImageIndex, setNextImageIndex] = useState(null);
+    const [showNext, setShowNext] = useState(false);
+    
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            // Calculate next image index
+            const nextIndex = currentImageIndex === backgroundImages.length - 1 ? 0 : currentImageIndex + 1;
+            setNextImageIndex(nextIndex);
+            
+            // Show the next image (fade in)
+            setShowNext(true);
+            
+            // After transition completes, make next image the current one and reset
+            setTimeout(() => {
+                setCurrentImageIndex(nextIndex);
+                setShowNext(false);
+            }, 1000); // Duration of fade-in effect
+            
+        }, 5000); // Change image every 5 seconds
+        
+        return () => clearInterval(intervalId);
+    }, [currentImageIndex, backgroundImages.length]);
+
     return (
         <>
-            <div 
-                className="fixed inset-0 bg-center bg-cover bg-no-repeat -z-10"
-                style={{ 
-                    backgroundImage: `url(/BackgroundA.jpg)`,
-                    backgroundPosition: 'center center',
-                    backgroundSize: 'cover'
-                }}
-            />
+            {/* This div holds both background layers */}
+            <div className="fixed inset-0 -z-10">
+                {/* Current/base image (always visible) */}
+                <div 
+                    className="absolute inset-0 bg-center bg-cover bg-no-repeat"
+                    style={{ 
+                        backgroundImage: `url(${backgroundImages[currentImageIndex]})`,
+                        backgroundPosition: 'center center',
+                        backgroundSize: 'cover',
+                    }}
+                />
+                
+                {/* Next image (fades in over current, then disappears) */}
+                {nextImageIndex !== null && (
+                    <div 
+                        className={`absolute inset-0 bg-center bg-cover bg-no-repeat transition-opacity duration-1000 ease-in-out`}
+                        style={{ 
+                            backgroundImage: `url(${backgroundImages[nextImageIndex]})`,
+                            backgroundPosition: 'center center',
+                            backgroundSize: 'cover',
+                            opacity: showNext ? 1 : 0,
+                        }}
+                    />
+                )}
+            </div>
             
             <div className="w-full flex flex-col items-center justify-center min-h-screen py-10">
                 <div className="backdrop-blur-md bg-black/10 p-10 rounded-2xl shadow-lg w-11/12 h-4/5 max-w-7xl max-h-screen mx-auto my-auto items-center flex flex-col justify-center">
@@ -34,5 +85,5 @@ export default function MainTitle() {
                 </div>
             </div>
         </>
-    )
+    );
 }

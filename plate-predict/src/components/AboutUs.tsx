@@ -13,7 +13,7 @@ export default function AboutUs() {
                             to input user data and efficient machine learning calculations, we can easily predict how much food 
                             each student requires in order to minimize waste.
                         </p>
-                     a     <p className="text-lg text-font text-white font-bold">
+                          <p className="text-lg text-font text-white font-bold">
                             By using our app, schools can not only reduce the amount of food wasted by students every single day, 
                             but can save thousands of dollars on extra food which was uncessiarily produced. This allows for the 
                             allocation of funds towards better school meals and other facilities for students.
