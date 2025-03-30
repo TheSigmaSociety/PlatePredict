@@ -11,7 +11,7 @@ const WasteScanner: React.FC<WasteScannerProps> = ({ onPhotoTaken }) =>   {
   const [isOpen, setIsOpen] = useState(false);
 
   async function handlePredict(photoThing: string) {
-    console.log(photoThing);
+    onPhotoTaken(photoThing);
     setIsOpen(false);
   }
 
@@ -23,7 +23,9 @@ const WasteScanner: React.FC<WasteScannerProps> = ({ onPhotoTaken }) =>   {
     <div>
       <button
         onClick={() => setIsOpen(true)}
-        className="flex flex-col items-center gap-2 px-12 py-10 border border-white rounded-lg hover:bg-gray-800 focus:outline-none transition text-white h-full"
+        className="flex flex-col items-center gap-2 px-12 py-10 border border-white/20 rounded-lg 
+              hover:bg-gray-800 focus:outline-none transition text-white h-full
+              bg-black/10 backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.3)]"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

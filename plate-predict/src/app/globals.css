@@ -69,3 +69,7 @@ html, body {
     padding-right: 1rem;
   }
 }
+
+.black-to-white-gradient {
+  background: linear-gradient(90deg, rgba(0,0,0,1) 0%, #F0EAD1 100%);
+}
