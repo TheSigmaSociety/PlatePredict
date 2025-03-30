@@ -27,3 +27,22 @@
 .text-font {
   font-family: 'Didact Gothic', sans-serif;
 }
+
+.animated-bg {
+  animation: warp 45s infinite alternate linear;
+}
+
+@keyframes warp {
+  0% {
+    background: #ab7fb8;
+  }
+  33% {
+    background: #7fb8ab;
+  }
+  66% {
+    background: #b87fab;
+  }
+  100% {
+    background: #ab7fb8;
+  }
+}

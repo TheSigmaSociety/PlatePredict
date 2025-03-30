@@ -1,23 +1,19 @@
 "use client";
 
-import React from 'react';
-import BarcodeScanner from '@/components/BarcodeScanner';
-import WasteScanner from '@/components/WasteScanner';
+import React from "react";
+import BarcodeScanner from "@/components/BarcodeScanner";
+import WasteScanner from "@/components/WasteScanner";
+
 export default function Page() {
-    const [barcode, setBarcode] = React.useState("");
-    function handleBarcode(barcode: string) {
-        console.log(barcode);
-    }
-    return (
-        <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-
-            
-            {/* <button className="bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600 transition duration-200 w-auto">
-                Open Waste Scanner
-            </button> */}
-            <WasteScanner />
-            <BarcodeScanner allah = {handleBarcode}/>
-
+  return (
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="absolute inset-0 animated-bg -z-10" />
+      <div className="flex flex-col items-center justify-center min-h-screen gap-8 bg-transparent">
+        <div className="flex gap-8">
+          <WasteScanner />
+          <BarcodeScanner />
         </div>
-    );
-};
+      </div>
+    </div>
+  );
+}

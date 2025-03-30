@@ -29,7 +29,7 @@ export default function MainTitle() {
             
         }, 5000); //Image changing time
         
-        return () => clearInterval(intervalId);
+        return () => clearInterval(intervalId); 
     }, [currentImageIndex, backgroundImages.length]);
 
     return (

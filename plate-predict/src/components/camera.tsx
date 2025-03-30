@@ -1,103 +1,87 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from "react";
 
 interface CameraProps {
-  onPhotoTaken?: (photo: string) => void;
+  onPhotoTaken: (photo: string) => void;
 }
 
-const Camera: React.FC<CameraProps> = ({ onPhotoTaken }) => {
-  const videoRef = useRef(null);
-  const [photo, setPhoto] = useState(null);
-  const [upload, setUpload] = useState(""); //take photo
-  const [isPhotoTaken, setIsPhotoTaken] = useState(false);
-  const [output, outputFunc] = useState("");
-  
+export default function Camera({ onPhotoTaken }: CameraProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+
   useEffect(() => {
-    const startCamera = async () => {
+    // Start camera when component mounts
+    async function startCamera() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" }
+        });
+        
+        setStream(mediaStream);
+        
         if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.addEventListener('loadedmetadata', () => {
-            videoRef.current.play();
-          });
+          videoRef.current.srcObject = mediaStream;
         }
       } catch (err) {
-        console.error("Error accessing camera: ", err);
+        console.error("Error accessing camera:", err);
       }
-    };
+    }
 
     startCamera();
 
+    // Cleanup function to stop camera when component unmounts
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        let tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach(track => track.stop());
+      if (stream) {
+        stream.getTracks().forEach(track => {
+          track.stop();
+        });
       }
     };
   }, []);
 
-  const getSigma = () => {
+  const takePhoto = () => {
     const video = videoRef.current;
-    if (video && !photo) {
-      const canvas = document.createElement('canvas');
+    const canvas = canvasRef.current;
+
+    if (video && canvas) {
+      const context = canvas.getContext("2d");
+      
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      const context = canvas.getContext('2d');
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const base64Image = canvas.toDataURL('image/png');
-      setPhoto(base64Image);
-      setUpload(""); //submit
-      setIsPhotoTaken(true);
       
-    } else {
-      outputFunc("generating..");
-      if (onPhotoTaken) {
-        onPhotoTaken(photo); // Pass the image to the parent component
+      // Draw current video frame to canvas
+      context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      // Convert canvas to data URL
+      const dataUrl = canvas.toDataURL("image/png");
+      
+      // Pass the photo data URL to parent
+      onPhotoTaken(dataUrl);
+      
+      // Stop all tracks in the stream to release camera
+      if (stream) {
+        stream.getTracks().forEach(track => {
+          track.stop();
+        });
       }
-      //upload to server
     }
   };
 
   return (
-    <div className="flex flex-col justify-center items-center p-2">
-      {photo && <img src={photo} className="aspect-auto rounded-md" />}
-      {!photo && <video ref={videoRef} autoPlay className="aspect-auto rounded-md" />}
-      {output && (
-        <div className="flex flex-col flex-grow justify-center items-center">
-          <div className="whitespace-pre-line pt-2">{output}</div>
-        </div>
-      )}
-      <div
-        className="flex bottom-0 w-24 items-center justify-center rounded cursor-pointer mt-1 border-black border-3"
-        onClick={getSigma}
+    <div className="flex flex-col items-center p-6 bg-gray-900 rounded-lg shadow-xl border border-gray-800">
+      <video 
+        ref={videoRef} 
+        autoPlay 
+        playsInline 
+        className="rounded-lg mb-6 max-w-2xl w-full h-auto"
+      />
+      <canvas ref={canvasRef} className="hidden" />
+      <button 
+        onClick={takePhoto}
+        className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all shadow-lg"
       >
-        {upload}
-        {isPhotoTaken ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="green"
-            className="size-12 border-2 border-secondary rounded-full m-2 p-1 mt-5"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-          </svg>
-        ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="size-12 border-2 border-black rounded-full m-2 p-1 mt-5"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 3.75H6A2.25 2.25 0 0 0 3.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0 1 20.25 6v1.5m0 9V18A2.25 2.25 0 0 1 18 20.25h-1.5m-9 0H6A2.25 2.25 0 0 1 3.75 18v-1.5M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-          </svg>
-        )}
-      </div>
+        Take Photo
+      </button>
     </div>
   );
-};
-
-export default Camera;
+}
