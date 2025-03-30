@@ -14,8 +14,16 @@ export default function MainTitle() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [nextImageIndex, setNextImageIndex] = useState<number | null>(null);
     const [showNext, setShowNext] = useState(false);
+    const [initialized, setInitialized] = useState(false);
     
     useEffect(() => {
+        setNextImageIndex(0);
+        setInitialized(true);
+    }, []);
+    
+    useEffect(() => {
+        if (!initialized) return;
+        
         const intervalId = setInterval(() => {
             const nextIndex = currentImageIndex === backgroundImages.length - 1 ? 0 : currentImageIndex + 1;
             setNextImageIndex(nextIndex);
@@ -30,13 +38,13 @@ export default function MainTitle() {
         }, 5000); //Image changing time
         
         return () => clearInterval(intervalId); 
-    }, [currentImageIndex, backgroundImages.length]);
+    }, [currentImageIndex, backgroundImages.length, initialized]);
 
     return (
         <>
             <div className="fixed inset-0 -z-10">
                 <div 
-                    className="absolute inset-0 bg-center bg-cover bg-no-repeat"
+                    className="absolute inset-0 bg-center bg-cover bg-no-repeat transition-opacity duration-1000"
                     style={{ 
                         backgroundImage: `url(${backgroundImages[currentImageIndex]})`,
                         backgroundPosition: 'center center',
@@ -58,14 +66,19 @@ export default function MainTitle() {
             </div>
             
             <div className="w-full flex flex-col items-center justify-center min-h-screen py-10">
-                <div className="backdrop-blur-md bg-black/10 p-10 rounded-2xl shadow-lg w-11/12 h-4/5 max-w-7xl max-h-screen mx-auto my-auto items-center flex flex-col justify-center">
-                    <h1 className="text-6xl md:text-7xl lg:text-9xl font-bold title-font title-color">P l a t e P r e d i c t</h1>
-                    <p className="mt-4 text-4xl text-center subtitle-color subtitle-font">saving cafeterias, one plate at a time</p>
+                <div className="backdrop-blur-md bg-black/10 p-6 sm:p-10 rounded-2xl shadow-lg w-11/12 h-4/5 max-w-7xl max-h-screen mx-auto my-auto items-center flex flex-col justify-center">
+                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-bold title-font title-color text-center">
+                        P l a t e P r e d i c t
+                    </h1>
                     
-                    <div className="flex flex-row md:flex-row gap-4 mt-12">
+                    <p className="mt-4 text-3xl sm:text-4xl text-center subtitle-color subtitle-font">
+                        saving cafeterias, one plate at a time
+                    </p>
+                    
+                    <div className="flex flex-row gap-4 mt-12">
                         <button
                             onClick={scrollDown}
-                            className="px-6 py-3 backdrop-blur-md bg-black/25 text-white border border-white/30 rounded-full hover:bg-white/30 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-opacity-50 shadow-lg subtitle-font subtitle-color"
+                            className="px-5 py-3 sm:px-6 sm:py-3 backdrop-blur-md bg-black/25 text-white border border-white/30 rounded-full hover:bg-white/30 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-opacity-50 shadow-lg subtitle-font subtitle-color text-base sm:text-lg"
                             aria-label="Scroll down to learn more"
                         >
                             learn more
@@ -76,7 +89,7 @@ export default function MainTitle() {
                         
                         <Link href="/input">
                             <button
-                                className="px-6 py-3 backdrop-blur-md bg-black/25 text-white border border-white/30 rounded-full hover:bg-white/30 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-opacity-50 shadow-lg subtitle-font subtitle-color"
+                                className="px-5 py-3 sm:px-6 sm:py-3 backdrop-blur-md bg-black/25 text-white border border-white/30 rounded-full hover:bg-white/30 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-opacity-50 shadow-lg subtitle-font subtitle-color text-base sm:text-lg"
                                 aria-label="Go to scanner page"
                             >
                                 scan items

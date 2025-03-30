@@ -46,3 +46,26 @@
     background: #ab7fb8;
   }
 }
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 640px) {
+  .title-font {
+    font-size: 85%; 
+  }
+  
+  .subtitle-font {
+    font-size: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
